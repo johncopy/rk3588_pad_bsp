@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote fetch="../../" name="rk"/>
+  
+  <default remote="rk" sync-j="4"/>
+  
+  <project name="android/rk/platform/system/rk_tee_user" path="external/security/rk_tee_user" revision="43cb181927e1357f118c6caeceddaa538da19e06" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="android/rk/u-boot" path="u-boot" revision="fd41a9e707ee2dd5a89ab32a67a57c36e7d2787d" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/app/lvgl_demo" path="app/lvgl_demo" revision="9f28c246c84ac70cea6cc84b03bb909f34f13529" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" name="linux/bsp/docs" path="docs" revision="3fd9d0165adaf534b726ec11cbdd676ab7cc4f58" upstream="release"/>
+  <project clone-depth="1" name="linux/bsp/docs" path="docs/cn" revision="3fd9d0165adaf534b726ec11cbdd676ab7cc4f58" upstream="cn">
+    <linkfile dest="docs/cn/RK3588/Rockchip_Developer_Guide_Linux_Software_CN.pdf" src="Rockchip_Developer_Guide_Linux_Software_CN.pdf"/>
+  </project>
+  <project clone-depth="1" name="linux/bsp/docs" path="docs/en" revision="3fd9d0165adaf534b726ec11cbdd676ab7cc4f58" upstream="en">
+    <linkfile dest="docs/en/RK3588/Rockchip_Developer_Guide_Linux_Software_EN.pdf" src="Rockchip_Developer_Guide_Linux_Software_EN.pdf"/>
+  </project>
+  <project name="linux/bsp/internal_doc" path="docs/cn/RK3588" revision="e051432dd017a3fa8b3914e1b8fd3313894a2599" upstream="rk3588-cn"/>
+  <project name="linux/bsp/internal_doc" path="docs/en/RK3588" revision="e051432dd017a3fa8b3914e1b8fd3313894a2599" upstream="rk3588-en"/>
+  <project name="linux/bsp/rkadk" path="app/rkadk" revision="730332c398a4dc679e37860cb51b711632e1830e" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" dest-branch="kirkstone" name="linux/build" path="yocto/build/conf" revision="07268e545092b9f62d9d16fa99c04dc816d66aa1" upstream="kirkstone"/>
+  <project name="linux/buildroot" path="buildroot" revision="cdd2004a4fb051ce49e44df8b78ea7733f00b6e7" upstream="refs/tags/linux-5.10-gen-rkr8">
+    <linkfile dest="envsetup.sh" src="build/envsetup.sh"/>
+  </project>
+  <project clone-depth="1" name="linux/debian" path="debian" revision="f2b716d408e2f075428748550969c4ede18123d1" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" name="linux/device/rockchip" path="device/rockchip" revision="40f07280aba98e8af510064a4d26d664021f99a3" upstream="refs/tags/rk3588-linux-5.10-gen-rkr8">
+    <linkfile dest="build.sh" src="common/scripts/build.sh"/>
+    <linkfile dest="Makefile" src="common/Makefile"/>
+    <linkfile dest="rkflash.sh" src="common/scripts/rkflash.sh"/>
+  </project>
+  <project name="linux/drm-cursor" path="external/drm-cursor" revision="23cebd5dd33a3073f296533954d4c211481891ab" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/alsa-config" path="external/alsa-config" revision="60018d18bdedaccf661c175ab364ae95ebe58a48" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" name="linux/external/camera_engine_rkaiq" path="external/camera_engine_rkaiq" revision="bc2ef61819048de0bb534f5ad86b92e3b4264743" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" name="linux/external/chromium" path="external/chromium" revision="53a1f155d3551691f8c9e7154d77ee68fa5e2a2c" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/common_algorithm" path="external/common_algorithm" revision="86e6e3e423f28c56692d90cd869798d8e8ce08d0" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/dpdk" path="external/dpdk" revision="b9f881cb80adab8e0638b057abe7abf0196515e4" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/rk_ethercat_release" path="external/rk_ethercat_release" revision="5fc4657be8f6bf1fc36e4b492cb18885afb56587" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/rk_pcba_test" path="external/rk_pcba_test" revision="9ca36b2bf70f2f164b1891f1ac1ce2bf8eb9325c" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/rkscript" path="external/rkscript" revision="9c0fc79e9afe73142b2c9557242db7a74be06cac" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/rktoolkit" path="external/rktoolkit" revision="bc1d85d6d2a39c67ed2d619f6faf1a996d542722" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/rkupdate" path="external/rkupdate" revision="e9cd4fe07733f807057fd7a6bd5e8d42a59624a7" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/rkwifibt" path="external/rkwifibt" revision="a07fe71890d54a336890ba5c077b2217b2b9eb3c" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/rkwifibt-app" path="external/rkwifibt-app" revision="538457c8e3e1ae76464c0e3c0794eb1720c9e49e" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/uac_app" path="external/uac_app" revision="434c2d15193589fd9960eb910c76333ab3446675" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/external/uvc_app" path="external/uvc_app" revision="d889984e50904d4615b0fc2668292201e273ebb3" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/gstreamer-rockchip" path="external/gstreamer-rockchip" revision="6c90d19b502e36f6228b2d3d31230363bb690b2d" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" name="linux/libmali" path="external/libmali" revision="53e9d1741c309a7b591bb936d43035bf5496fa16" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/linux-rga" path="external/linux-rga" revision="2bff35ced87d66e4412720298f21552f2dc85ae3" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" dest-branch="kirkstone/meta-browser" name="linux/poky" path="yocto/meta-browser" revision="40ebd7f5088f75560b3a2032e48e614d0428b022" upstream="kirkstone/meta-browser"/>
+  <project clone-depth="1" dest-branch="kirkstone/meta-clang" name="linux/poky" path="yocto/meta-clang" revision="312ff1c39b1bf5d35c0321e873417eb013cea477" upstream="kirkstone/meta-clang"/>
+  <project clone-depth="1" dest-branch="kirkstone/meta-openembedded" name="linux/poky" path="yocto/meta-openembedded" revision="8bb16533532b6abc2eded7d9961ab2a108fd7a5b" upstream="kirkstone/meta-openembedded"/>
+  <project clone-depth="1" dest-branch="kirkstone/meta-lts-mixins" name="linux/poky" path="yocto/meta-lts-mixins" revision="1a6746a81da4d5bf2e5640fd2fa8f3ea453d40bf" upstream="kirkstone/meta-lts-mixins"/>
+  <project clone-depth="1" dest-branch="kirkstone/poky" name="linux/poky" path="yocto/poky" revision="b6f6c729453cb88961488e3332046517e2fe99bb" upstream="kirkstone/poky">
+    <linkfile dest="yocto/scripts" src="scripts"/>
+    <linkfile dest="yocto/bitbake" src="bitbake"/>
+    <linkfile dest="yocto/meta-poky" src="meta-poky"/>
+    <linkfile dest="yocto/.templateconf" src=".templateconf"/>
+    <linkfile dest="yocto/oe-init-build-env" src="oe-init-build-env"/>
+  </project>
+  <project name="linux/recovery" path="external/recovery" revision="a76cbf9928a60c36928cfbd57cbbbb7a94e1a0f5" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/rockchip-test" path="external/rockchip-test" revision="4cc483a7b81b3733ecff9b050ea8cebc897abbad" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/rockit" path="external/rockit" revision="51768b80b2d1f4f9e11f49ee0f38c35e1d38714c" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/security/bin" path="external/security/bin" revision="5f205632413911a0abe8d13c93bae9dfc72829b7" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" name="linux/tools" path="tools" revision="6e12752f16e401ea25ed338f277055097e4d808c" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="linux/xserver" path="external/xserver" revision="1dec84256f1aa900357678557bd5a605d36f07b2" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" dest-branch="kirkstone" name="linux/yocto/meta-rockchip" path="yocto/meta-rockchip" revision="b6c9bd784b2e8711b1b115cc4988e03126da8c5f" upstream="kirkstone"/>
+  <project name="rk/kernel" path="kernel" revision="293a5dc4060a4487455028b2e71e52f71c6c16b2" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/librkcrypto" path="external/security/librkcrypto" revision="62795797b3aa3b3e9a6c32672a0c4d3d0f44c78a" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/mcu/hal" path="external/hal" revision="95edaf1635f8f2a638f94f3dcb52033a05ec08d2" upstream="refs/tags/linux-5.10-gen-rkr8">
+    <linkfile dest="rtos/bsp/rockchip/common/hal" src="."/>
+  </project>
+  <project name="rk/mcu/hal/applications" path="external/hal/applications" revision="c5927d3070ebc810b2920f9162bbdada74e63acb" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/mcu/hal/board" path="external/hal/board" revision="280329613bb62f83b064f446fc9c8c205991e111" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/mcu/hal/middleware" path="external/hal/middleware" revision="bf7d460318c4539d2a1eef6ec89aaa319e1ad7cb" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/mcu/hal/test" path="external/hal/test" revision="0881a7f85277364dc2445f3789ebff52b5617465" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/mpp" path="external/mpp" revision="d281758e025e6e22ea643ec6a2cc0783805d1d3b" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/prebuilts/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu" path="prebuilts/gcc/linux-x86/aarch64/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu" revision="adbb295a970c4b39dc487c95226fe84d2c460072" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/prebuilts/gcc-arm-10.3-2021.07-x86_64-arm-none-linux-gnueabihf" path="prebuilts/gcc/linux-x86/arm/gcc-arm-10.3-2021.07-x86_64-arm-none-linux-gnueabihf" revision="2e89382ca3f8c34086272509ae4d7a5c340ffafc" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/prebuilts/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux" path="prebuilts/gcc/linux-x86/arm/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux" revision="9bbfea5b9d8650964f2c1f5874f575f44ab0cea5" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/rkbin" path="rkbin" revision="d5120aaa50b58fbfc2e5dce35805fa7cc6d74c90" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" name="rk/rknn-toolkit2" path="external/rknn-toolkit2" revision="861bde250e73978f5ec540825b7c5fa8a8ca0aa6" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project clone-depth="1" name="rk/rknpu2" path="external/rknpu2" revision="3c7a8048300d2a42dbf2028baf1504d4d7887f2b" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rk/uefi-monorepo" path="uefi" revision="13dcdbf325ab662899e7d8b6269f6a0d726f393b" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rtos/components/audio" path="rtos/third_party/audio/audio_server/source" revision="4efa8b5e79f8cebe798338f2a6d49c70e657698c" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rtos/rt-thread/Rockchip-docs" path="rtos/Rockchip-docs" revision="5e86bc532f4fb8b6fcbd4d80100b60a10b6ac3a7" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rtos/rt-thread/bsp/rockchip-pisces" path="rtos/bsp/rockchip/pisces" revision="a9c4482818aa8c2b9876006f75da4e4d9b61e746" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rtos/rt-thread/rt-thread" path="rtos/" revision="9fb602ce1c42af7d5689de84a36df5ce600c0e8b" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rtos/rt-thread/rtthread-apps" path="rtos/applications/rtthread-apps" revision="525c38360aa48b77535294d6e58d6b0cdf776539" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+  <project name="rtos/rt-thread/wearable" path="rtos/applications/wearable" revision="d619ce7684d3414589f7b4ff7c9d754e953c87e9" upstream="refs/tags/linux-5.10-gen-rkr8"/>
+</manifest>
