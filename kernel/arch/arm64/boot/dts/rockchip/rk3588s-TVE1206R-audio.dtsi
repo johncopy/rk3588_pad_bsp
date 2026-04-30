@@ -1,0 +1,105 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2021 Rockchip Electronics Co., Ltd.
+ *
+ */
+
+/ {
+	es8388_sound: es8388-sound {
+		status = "okay";
+		compatible = "simple-audio-card";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,mclk-fs = <256>;
+		simple-audio-card,name = "rockchip-es8388";
+		simple-audio-card,aux-devs = <&aw87xxx_pa1 &aw87xxx_pa2>;
+		simple-audio-card,dai-link@0 {
+			format = "i2s";
+			cpu {
+				sound-dai = <&i2s0_8ch>;
+			};
+			codec {
+				sound-dai = <&es8388>;
+			};
+		};
+	};
+
+	pdmics: dummy-codec {
+		status = "okay";
+		compatible = "rockchip,dummy-codec";
+		#sound-dai-cells = <0>;
+	};
+
+	pdmmic_sound: pdmmic-sound {
+		status = "okay";
+		compatible = "simple-audio-card";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,name = "rockchip-pdm";
+		simple-audio-card,mclk-fs = <256>;
+		simple-audio-card,dai-link@0 {
+			format = "pdm";
+			cpu {
+				sound-dai = <&pdm0>;
+			};
+			codec {
+				sound-dai = <&pdmics>;
+			};
+		};
+	};
+};
+
+&i2c3 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c3m0_xfer>;
+
+	es8388: es8388@11 {
+		status = "okay";
+		#sound-dai-cells = <0>;
+		compatible = "everest,es8388", "everest,es8323";
+		reg = <0x11>;
+		clocks = <&mclkout_i2s0>;
+		clock-names = "mclk";
+		assigned-clocks = <&mclkout_i2s0>;
+		assigned-clock-rates = <12288000>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&i2s0_mclk>;
+	};
+
+	aw87xxx_pa1: aw87xxx_pa1@58 {
+		compatible = "awinic,aw87xxx_pa";
+		#sound-dai-cells = <0>;
+		reg = <0x58>;
+		dev_index = < 0 >;
+		reset-gpio = <&gpio1 RK_PA1 GPIO_ACTIVE_HIGH>;
+		status = "okay";
+	};
+
+	aw87xxx_pa2: aw87xxx_pa2@5b {
+		compatible = "awinic,aw87xxx_pa";
+		#sound-dai-cells = <0>;
+		reg = <0x5b>;
+		dev_index = < 1 >;
+		reset-gpio = <&gpio4 RK_PB5 GPIO_ACTIVE_HIGH>;
+		status = "okay";
+	};
+};
+
+&i2s0_8ch {
+	status = "okay";
+	pinctrl-0 = <&i2s0_lrck
+		     &i2s0_sclk
+		     &i2s0_sdi0
+		     &i2s0_sdo0>;
+};
+
+&pdm0 {
+	status = "okay";
+	rockchip,path-map = <1 0 2 3>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pdm0m0_clk &pdm0m0_sdi1>;
+	#sound-dai-cells = <0>;
+};
+
+&pinctrl {
+	
+};
