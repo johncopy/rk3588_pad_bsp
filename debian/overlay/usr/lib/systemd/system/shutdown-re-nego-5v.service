@@ -1,0 +1,11 @@
+[Unit]
+Description=shutdown Script
+
+[Service]
+Type=oneshot
+ExecStop=/etc/init.d/re-nego-5v.sh
+RemainAfterExit=true
+TimeoutSec=0
+
+[Install]
+WantedBy=multi-user.target

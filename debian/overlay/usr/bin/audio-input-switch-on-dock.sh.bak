@@ -1,0 +1,135 @@
+#!/bin/bash
+# 获取当前登录的桌面用户（PulseAudio 通常运行在用户会话中）
+# USER=$(who | awk '/tty7|:0/ {print $1; exit}')
+LOGTAG="audio-input-switch-on-dock"
+
+get_hook_status() {
+    busctl --system call ght.platform.dock /ght/platform/dock ght.platform.dock GetHookStatus 2>/dev/null | awk '{print $NF}'
+}
+
+run_in_background() {
+    logger "$LOGTAG: script start ($1)"
+    # 根据事件类型切换设备
+    case "$1" in
+        remove)
+            (
+              # 平板从底座拔出时，切换默认的录音设备到softrec上
+              # 将 softrec 设为默认源，确保其从 SUSPENDED 状态恢复
+              pactl set-default-source alsa_input.softrec
+
+              # 通过 suspend 0 方式强制唤醒 softrec 设备
+              pactl suspend-source alsa_input.softrec 0
+              sleep 0.5
+              
+              # 卸载已加载的回声消除模块（避免重复加载导致冲突）
+              while pactl list modules | grep -q "module-echo-cancel"; do
+                pactl unload-module module-echo-cancel
+              done
+
+              # 基于 softrec 创建回声消除源：internal_mic
+              pactl load-module module-echo-cancel \
+                source_name=internal_mic \
+                source_master=alsa_input.softrec \
+                aec_method=webrtc \
+                aec_args="analog_gain_control=0"
+              
+              # 将 internal_mic（基于 softrec）设为默认录音源
+              pactl set-default-source internal_mic
+
+              sleep 1
+              # 将默认扬声器切回板载声卡（平板本体）
+              pactl set-default-sink alsa_output.platform-es8388-sound.stereo-fallback
+              logger "平板拔出底座，切换默认录音设备到softrec上"
+
+              # 循环检查 softrec 状态，必要时继续唤醒直到脱离 SUSPENDED
+              for i in {1..10}; do
+                  if pactl list short sources | grep "alsa_input.softrec" | grep -q "SUSPENDED"; then
+                      logger ">>>>尝试激活 softrec 设备，第 $i 次>>>>"
+                      # 再次尝试强制唤醒
+                      pactl suspend-source alsa_input.softrec 0
+                      sleep 1
+                  else
+                      logger ">>>>softrec 设备已激活，状态正常>>>>"
+                      break
+                  fi
+              done
+            )
+            ;;
+        # 平板插入底座
+        add)
+            (
+              sleep 1
+              # 卸载已加载的回声消除模块（避免重复加载导致冲突）
+              while pactl list modules | grep -q "module-echo-cancel"; do
+                pactl unload-module module-echo-cancel
+              done
+              # 预先基于 softrec 创建 internal_mic，确保本体麦克风可用
+              pactl load-module module-echo-cancel \
+                source_name=internal_mic \
+                source_master=alsa_input.softrec \
+                aec_method=webrtc \
+                aec_args="analog_gain_control=0"
+
+              # 等待底座麦克风阵列出现，出现后：
+              # 1) 基于阵列源创建带回声消除的 micarray_mic
+              # 2) 将 micarray_mic 设为默认录音源
+              # 3) 将默认扬声器切到底座 USB 声卡
+              for i in {1..100}; do
+                if pactl list sources | grep -q "alsa_input.usb-Bothlent_Bothlent_UAC_Dongle_88156088-00.multichannel-input"; then
+                  pactl load-module module-echo-cancel \
+                      source_name=micarray_mic \
+                      source_master=alsa_input.usb-Bothlent_Bothlent_UAC_Dongle_88156088-00.multichannel-input \
+                      aec_method=webrtc \
+                      aec_args="analog_gain_control=0"
+
+                  sleep 1
+                  break
+                fi
+                sleep 1
+                logger ">>>>wait alsa_input.usb-Bothlent $i>>>>"
+              done
+
+              # 为手持话筒创建带回声消除的源（非默认，仅提供可选输入）
+              for i in {1..100}; do
+                if pactl list sources | grep -q "alsa_input.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.mono-fallback"; then
+                  pactl load-module module-echo-cancel \
+                    source_name=handset_mic \
+                    source_master=alsa_input.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.mono-fallback \
+                    aec_method=webrtc \
+                    aec_args="analog_gain_control=0"
+                  break
+                fi
+                sleep 1
+                logger ">>>>wait alsa_input.usb-C-Media $i>>>>"
+              done
+
+              # 根据当前摘挂机状态选择默认录音源
+              HOOK_STATUS="$(get_hook_status)"
+              case "$HOOK_STATUS" in
+                1)
+                  pactl set-default-source handset_mic
+                  pactl set-default-sink alsa_output.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.analog-stereo
+                  logger "检测到摘机，切换默认录音设备到手持话筒(handset_mic)"
+                  ;;
+                0)
+                  pactl set-default-source micarray_mic
+                  pactl set-default-sink alsa_output.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.analog-stereo.2
+                  logger "检测到挂机，切换默认录音设备到麦克风阵列(micarray_mic)"
+                  ;;
+                *)
+                  # 默认保持麦克风阵列为默认
+                  pactl set-default-source micarray_mic
+                  pactl set-default-sink alsa_output.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.analog-stereo.2
+                  logger "GetHookStatus 无效或不可用($HOOK_STATUS)，默认使用麦克风阵列"
+                  ;;
+              esac
+
+              logger "平板插入底座，切换默认录音设备到麦克风阵列上"
+            ) &
+            ;;
+    esac
+    logger "$LOGTAG: script end ($1)"
+}
+
+run_in_background "$1"
+exit 0

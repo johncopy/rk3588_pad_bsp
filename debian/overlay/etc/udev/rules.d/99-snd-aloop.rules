@@ -1,0 +1,2 @@
+# Load snd-aloop module when sound subsystem is available
+SUBSYSTEM=="sound", ACTION=="add", RUN+="/bin/sh -c '/sbin/insmod /lib/modules/5.10.209/kernel/sound/drivers/snd-aloop.ko'"

@@ -1,0 +1,22 @@
+[connection]
+id=有线连接 2
+uuid=34656cf9-a758-328c-b5c2-84a489d8847e
+type=ethernet
+autoconnect-priority=-999
+interface-name=eth1
+permissions=
+timestamp=1755754772
+
+[ethernet]
+mac-address-blacklist=
+
+[ipv4]
+dns-search=
+method=auto
+
+[ipv6]
+addr-gen-mode=stable-privacy
+dns-search=
+method=auto
+
+[proxy]

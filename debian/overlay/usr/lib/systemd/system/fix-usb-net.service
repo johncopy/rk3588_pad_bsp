@@ -1,0 +1,13 @@
+# /etc/systemd/system/fix-usb-net.service
+[Unit]
+Description=Fix USB Ethernet Naming
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/sh -c "touch /run/enable_eth_rules"
+ExecStartPost=/bin/sh -c "udevadm trigger --action=add --subsystem-match=net"
+
+[Install]
+WantedBy=multi-user.target

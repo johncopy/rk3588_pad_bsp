@@ -1,0 +1,8 @@
+# 设备1：端口1-1.4.2
+SUBSYSTEM=="sound", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="0012", KERNELS=="1-1.4.2", ENV{ID_SERIAL}="C-Media_Electronics_Inc._USB_Audio_Device_A",ENV{PULSE_NAME}="HANDSET_Speakers"
+
+# 设备2：端口1-1.4.4.4
+#SUBSYSTEM=="sound", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="0012", KERNELS=="1-1.4.4.3", ENV{ID_SERIAL}="C-Media_Electronics_Inc._USB_Audio_Device_B",ENV{PULSE_NAME}="HANDFREE_Speakers"
+
+# 设备2：端口1-1.4.4.2
+#SUBSYSTEM=="sound", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="0012", KERNELS=="1-1.4.4.2", ENV{ID_SERIAL}="C-Media_Electronics_Inc._USB_Audio_Device_C",ENV{PULSE_NAME}="HANDFREE_Speakers"

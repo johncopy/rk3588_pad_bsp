@@ -1,0 +1,116 @@
+#!/bin/bash
+
+LOGTAG="dock-hook-audio-switch"
+
+HANDSET_SINK="alsa_output.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.analog-stereo"
+DOCK_SINK="alsa_output.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.analog-stereo.2"
+MICARRAY_SOURCE_RAW="alsa_input.usb-Bothlent_Bothlent_UAC_Dongle_88156088-00.multichannel-input"
+HANDSET_SOURCE_RAW="alsa_input.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.mono-fallback"
+
+MICARRAY_EC_SOURCE="micarray_mic"
+HANDSET_EC_SOURCE="handset_mic"
+
+log()
+{
+  logger -t "$LOGTAG" "$@"
+}
+
+ensure_ec_source()
+{
+  # $1: desired echo-cancel source name
+  # $2: master raw source
+  local ec_name="$1"
+  local master="$2"
+
+  # If already exists, nothing to do
+  if pactl list short sources | awk '{print $2}' | grep -qx "$ec_name"; then
+    return 0
+  fi
+
+  # Make sure master source exists
+  for i in {1..20}; do
+    if pactl list short sources | awk '{print $2}' | grep -qx "$master"; then
+      break
+    fi
+    sleep 0.5
+  done
+
+  # Unload existing module-echo-cancel(s) to avoid duplicates
+  while pactl list modules | grep -q "module-echo-cancel"; do
+    pactl unload-module module-echo-cancel
+  done
+
+  # Create echo-cancel source
+  pactl load-module module-echo-cancel \
+    source_name="$ec_name" \
+    source_master="$master" \
+    aec_method=webrtc \
+    aec_args="analog_gain_control=0" >/dev/null
+}
+
+switch_to_dock()
+{
+  # Prefer mic array as default source when on-hook (handset back)
+  ensure_ec_source "$MICARRAY_EC_SOURCE" "$MICARRAY_SOURCE_RAW"
+  pactl set-default-source "$MICARRAY_EC_SOURCE" || true
+
+  # Switch default sink to dock USB
+  for i in {1..10}; do
+    if pactl list short sinks | awk '{print $2}' | grep -qx "$DOCK_SINK"; then
+      pactl set-default-sink "$DOCK_SINK"
+      break
+    fi
+    sleep 0.5
+  done
+
+  log "HookState=0(挂机): set source=$MICARRAY_EC_SOURCE, sink=$DOCK_SINK"
+}
+
+switch_to_handset()
+{
+  ensure_ec_source "$HANDSET_EC_SOURCE" "$HANDSET_SOURCE_RAW"
+  pactl set-default-source "$HANDSET_EC_SOURCE" || true
+  for i in {1..10}; do
+    if pactl list short sinks | awk '{print $2}' | grep -qx "$HANDSET_SINK"; then
+      pactl set-default-sink "$HANDSET_SINK"
+      break
+    fi
+    sleep 0.5
+  done
+  log "HookState=1(摘机): set source=$HANDSET_EC_SOURCE, sink=$HANDSET_SINK"
+}
+
+wait_pulseaudio()
+{
+  for i in {1..60}; do
+    if pactl info >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 0.5
+  done
+  return 1
+}
+
+main()
+{
+  wait_pulseaudio || log "Warning: PulseAudio not ready, continuing anyway"
+
+  # Start monitor for HookStateChanged on system bus
+  stdbuf -oL dbus-monitor --system "interface='ght.platform.dock',member='HookStateChanged'" |
+  while IFS= read -r line; do
+    case "$line" in
+      *"int32 0"*)
+        switch_to_dock
+        ;;
+      *"int32 1"*)
+        switch_to_handset
+        ;;
+      *)
+        ;;
+    esac
+  done
+}
+
+main "$@"
+
+

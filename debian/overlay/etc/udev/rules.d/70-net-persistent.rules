@@ -1,0 +1,13 @@
+# /etc/udev/rules.d/70-net-persistent.rules
+# 开关文件存在时才生效
+
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", \
+  ATTRS{idVendor}=="0bda", ATTRS{idProduct}=="8153", ATTRS{devpath}=="1.2", \
+  NAME="eth0"
+
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", \
+  ATTRS{idVendor}=="0bda", ATTRS{idProduct}=="8153", ATTRS{devpath}=="1.3", \
+  NAME="eth1"
+
+LABEL="delay_loadding_usb"
+

@@ -1,0 +1,12 @@
+[Unit]
+Description=Set Default Audio Device
+After=pulseaudio.service
+Requires=pulseaudio.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/set-default-audio-device.sh
+User=root 
+
+[Install]
+WantedBy=multi-user.target

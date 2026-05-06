@@ -1,0 +1,4 @@
+ACTION=="add", SUBSYSTEM=="usb", DEVPATH=="/devices/platform/fc880000.usb/usb1/1-1/1-1.4/1-1.4.2/1-1.4.2:1.0", RUN+="/usr/bin/audio-input-switch-on-dock.sh add"
+#ACTION=="add", SUBSYSTEM=="sound", DEVPATH=="/devices/platform/fc880000.usb/usb1/1-1/1-1.4/1-1.4.2/1-1.4.2:1.0/sound/card1", RUN+="/usr/bin/audio-input-switch-on-dock.sh add"
+ACTION=="remove", SUBSYSTEM=="usb", DEVPATH=="/devices/platform/fc880000.usb/usb1/1-1/1-1.4/1-1.4.2/1-1.4.2:1.0", RUN+="/usr/bin/audio-input-switch-on-dock.sh remove"
+#ACTION=="remove", SUBSYSTEM=="sound", DEVPATH=="/devices/platform/fc880000.usb/usb1/1-1/1-1.4/1-1.4.2/1-1.4.2:1.0/sound/card1", RUN+="/usr/bin/audio-input-switch-on-dock.sh remove"

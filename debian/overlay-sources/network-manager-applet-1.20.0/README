@@ -1,0 +1,14 @@
+获取源码：
+apt source network-manager-applet
+
+
+编译方法：
+在板卡上：
+sudo apt update
+sudo apt install build-essential devscripts
+sudo apt build-dep network-manager-applet
+./configure && make && sudo make install
+
+输出文件：
+nm-applet  
+nm-connection-editor
